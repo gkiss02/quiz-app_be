@@ -2,8 +2,10 @@ const express = require('express');
 const http = require('http');
 const app = express();
 const server = http.createServer(app);
+const bodyParser = require('body-parser')
 
 app.use(express.json());
+app.use(bodyParser.json())
 app.use(express.urlencoded({ extended: true }));
 
 const swaggerDoc = require('swagger-jsdoc');
