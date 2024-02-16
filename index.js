@@ -17,6 +17,7 @@ const userModel = require('./models/user');
 const gameModel = require('./models/game');
 
 userModel.hasMany(gameModel.Game, { foreignKey: 'userId' });
+gameModel.Game.belongsTo(userModel, { foreignKey: 'userId' });
 
 app.use((req,res,next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -30,6 +31,7 @@ app.use((req,res,next) => {
 
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
+app.use('/game', require('./routes/game'));
 
 const options = {
     definition: {
