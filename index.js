@@ -32,6 +32,7 @@ app.use((req,res,next) => {
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
 app.use('/game', require('./routes/game'));
+app.use('/ranking', require('./routes/ranking'));
 
 const options = {
     definition: {
