@@ -40,4 +40,20 @@ router.post('/createGame/:difficulty', isAuth, controller.createGame);
  */
 router.patch('/increaseScore', isAuth, controller.increaseScore);
 
+/**
+ * @swagger
+ * /game/getLatestGameScore:
+ *  get:
+ *   tags: [Game]
+ *   description: Get the current user's game score
+ *   security:
+ *   - bearerAuth: []
+ *   responses:
+ *    200:
+ *     description: Successful operation
+ *    401:
+ *     description: Unauthorized
+ */
+router.get('/getLatestGameScore', isAuth, controller.getLatestGameScore);
+
 module.exports = router;

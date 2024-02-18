@@ -1,5 +1,5 @@
 const express = require('express');
-const Game = require('../models/game');
+const Game = require('../models/game').Game;
 const User = require('../models/user');
 
 exports.createGame = async (req, res) => {
@@ -35,6 +35,21 @@ exports.increaseScore = async (req, res) => {
         res.status(200).json("Score increased successfully!");
     } catch (err) {
         console.log(err);
+        res.status(400).json(err);
+    }
+};
+
+exports.getLatestGameScore = async (req, res) => {
+    const userId = res.userId;
+
+    try {
+        const lastGame = await Game.findOne({
+            attributes: ['score', 'difficulty'],
+            where: { userId: userId },
+            order: [['createdAt', 'DESC']]
+        });
+        res.status(200).json(lastGame);
+    } catch (err) {
         res.status(400).json(err);
     }
 };

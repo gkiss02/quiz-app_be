@@ -1,4 +1,4 @@
-const helper = require('../helpers/ranking');
+const helper = require('../util/ranking');
 
 exports.allTime = async (req, res) => {
     try {

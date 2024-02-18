@@ -12,38 +12,49 @@ exports.getMe = async (req, res) => {
     }
 }
 
-exports.updateMe = async (req, res) => {
+exports.updateEmail = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const username = req.body.username;
     const email = req.body.email;
-    const password = req.body.password;
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 12);
         const user = await User.findOne({ where: { id: res.userId } });
-
-        const existingUsername = await User.findOne({ where: { username: username } });
         const existingEmail = await User.findOne({ where: { email: email } });
-
-        if (existingUsername && existingUsername.id != res.userId) {
-            res.status(400).json("Username already exists");
-        }
 
         if (existingEmail && existingEmail.id != res.userId) {
             res.status(400).json("Email already exists");
         }
-
+        
         user.set({
-            username: username,
-            email: email,
+            email: email
+        });
+
+        await user.save();
+        res.status(201).json("Email updated");
+    } catch {
+        res.status(401).json("Update fail");
+    }
+}
+
+exports.updatePassword = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const password = req.body.password;
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    try {
+        const user = await User.findOne({ where: { id: res.userId } });
+        user.set({
             password: hashedPassword
         });
         await user.save();
-        res.status(201).json("Changes saved");
+        res.status(201).json("Password updated");
     } catch {
         res.status(401).json("Update fail");
     }

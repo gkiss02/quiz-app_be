@@ -7,6 +7,24 @@ const validator = require('express-validator');
 
 /**
  * @swagger
+ * components:
+ *      schemas:
+ *       UserUpdateEmailDto:
+ *        type: object
+ *        properties:
+ *          email:
+ *           type: string
+ *       UserUpdatePasswordDto:
+ *        type: object
+ *        properties:
+ *         password:
+ *          type: string
+ *         passwordConfirm:
+ *          type: string
+ */ 
+
+/**
+ * @swagger
  * /users/me:
  *  get:
  *   tags: [Users]
@@ -23,10 +41,10 @@ router.get('/me', isAuth, controller.getMe);
 
 /**
  * @swagger
- * /users/updateMe:
- *  put:
+ * /users/updateEmail:
+ *  patch:
  *   tags: [Users]
- *   description: Update the current user
+ *   description: Update the current user email
  *   security:
  *    - bearerAuth: []
  *   requestBody:
@@ -34,24 +52,48 @@ router.get('/me', isAuth, controller.getMe);
  *    content:
  *     application/json:
  *      schema:
- *       $ref: '#/components/schemas/UserRegisterDto'
+ *       $ref: '#/components/schemas/UserUpdateEmailDto'
+ *     schema:
  *   responses:
  *   200:
  *    description: Successful operation
  *   401:
  *    description: Unauthorized
  */
-router.put('/updateMe', 
+router.patch('/updateEmail', 
     isAuth,
     [
-        validator.body('username')
-            .isLength({ min: 3 })
-            .withMessage('username must be at least 3 characters long'),
-
         validator.body('email')
             .isEmail()
             .withMessage('Please enter a valid email'),
+    ],
+    controller.updateEmail
+);
 
+/**
+ * @swagger
+ * /users/updatePassword:
+ *  patch:
+ *   tags: [Users]
+ *   description: Update the current user password
+ *   security:
+ *    - bearerAuth: []
+ *   requestBody:
+ *    required: true
+ *    content:
+ *     application/json:
+ *      schema:
+ *       $ref: '#/components/schemas/UserUpdatePasswordDto'
+ *    schema:
+ *   responses:
+ *   200:
+ *    description: Successful operation
+ *   401:
+ *    description: Unauthorized
+ */
+router.patch('/updatePassword',
+    isAuth,
+    [
         validator.body('password')
             .isLength({ min: 8 })
             .withMessage('Password must be at least 8 characters long')
@@ -63,7 +105,7 @@ router.put('/updateMe',
                 }
             })
     ],
-    controller.updateMe
+    controller.updatePassword
 );
 
 /**

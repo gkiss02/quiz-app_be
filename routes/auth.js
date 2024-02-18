@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const validator = require('express-validator');
-const helpers = require('../helpers/auth');
+const helpers = require('../util/auth');
 
 /**
  * @swagger
