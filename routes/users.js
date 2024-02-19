@@ -21,6 +21,11 @@ const validator = require('express-validator');
  *          type: string
  *         passwordConfirm:
  *          type: string
+ *       UserUpdateProfilePictureDto:
+ *        type: object
+ *        properties:
+ *         profilePicture:
+ *          type: string
  */ 
 
 /**
@@ -107,6 +112,29 @@ router.patch('/updatePassword',
     ],
     controller.updatePassword
 );
+
+/**
+ * @swagger
+ * /users/updateProfilePicture:
+ *  patch:
+ *   tags: [Users]
+ *   description: Update the current user profile picture
+ *   security:
+ *    - bearerAuth: []
+ *   requestBody:
+ *    required: true
+ *    content:
+ *     application/json:
+ *      schema:
+ *       $ref: '#/components/schemas/UserUpdateProfilePictureDto'
+ *    schema:
+ *   responses:
+ *   200:
+ *    description: Successful operation
+ *   401:
+ *    description: Unauthorized
+ */
+router.patch('/updateProfilePicture', isAuth, controller.updateProfilePicture);
 
 /**
  * @swagger

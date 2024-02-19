@@ -19,7 +19,8 @@ exports.createUser = async (req, res) => {
         const user = new User({
             username: username,
             email: email,
-            password: hashedPassword
+            password: hashedPassword,
+            profilePicture: "https://i.ibb.co/vY7m0jM/user-2.png"
         });
         
         await user.save();

@@ -41,6 +41,7 @@ exports.updateEmail = async (req, res) => {
 
 exports.updatePassword = async (req, res) => {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
@@ -55,6 +56,21 @@ exports.updatePassword = async (req, res) => {
         });
         await user.save();
         res.status(201).json("Password updated");
+    } catch {
+        res.status(401).json("Update fail");
+    }
+}
+
+exports.updateProfilePicture = async (req, res) => {
+    const profilePicture = req.body.profilePicture;
+
+    try {
+        const user = await User.findOne({ where: { id: res.userId } });
+        user.set({
+            profilePicture: profilePicture
+        });
+        await user.save();
+        res.status(201).json("Profile picture updated");
     } catch {
         res.status(401).json("Update fail");
     }
